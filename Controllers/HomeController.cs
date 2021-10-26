@@ -8,7 +8,7 @@ namespace jwt_example.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         private readonly ITokenService _tokenService;
         private readonly IUserRepository _userRepository;
@@ -27,15 +27,12 @@ namespace jwt_example.Controllers
         {
             
             var user = _userRepository.GetUser(model);
-
-            // Verifica se o usuário existe
+                        
             if (user == null)
-                return NotFound(new { message = "Usuário ou senha inválidos" });
-
-            // Gera o Token
+                return NotFound(new { message = "Invalid Username or Password" });
+                        
             var token = _tokenService.BuildToken(_configuration["Jwt:Key"] ,user);                        
-
-            // Retorna os dados
+                        
             return new
             {
                 user = user.UserName,
